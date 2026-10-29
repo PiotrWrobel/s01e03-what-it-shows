@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>#4471 · two date causes · support kb</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #fbfaf7;
+        --fg: #1d1d1b;
+        --muted: #6b6a66;
+        --line: #e3e0d8;
+        --accent: #2f6f5e;
+        --note-bg: #eef5f2;
+        --mono: ui-monospace, "Cascadia Code", Menlo, monospace;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171716;
+          --fg: #ecebe6;
+          --muted: #9c9a93;
+          --line: #34332f;
+          --accent: #6fbfa6;
+          --note-bg: #1d2c27;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.6 system-ui, sans-serif;
+      }
+      .kb {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 2rem 16px 4rem;
+      }
+      .crumb, a { color: var(--accent); }
+      .crumb {
+        font: 0.8rem var(--mono);
+        text-decoration: none;
+      }
+      h1 { margin: 0.25rem 0 0.5rem; line-height: 1.2; }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .status {
+        border: 1px solid var(--line);
+        border-radius: 99px;
+        padding: 0 0.6rem;
+      }
+      .callout {
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        background: var(--note-bg);
+      }
+      table {
+        width: 100%;
+        margin: 1rem 0;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+      th, td {
+        padding: 0.35rem 0.5rem;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+      code, .stamp { font-family: var(--mono); }
+      code { font-size: 0.88em; }
+      .muted, footer { color: var(--muted); }
+      .stamp { margin: 2rem 0 0; font-size: 0.85rem; }
+      .stamp b { color: var(--accent); letter-spacing: 0.04em; }
+      footer {
+        margin-top: 3rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="kb">
+      <header>
+        <a class="crumb" href="/kb">support desk · kb</a>
+        <h1>#4471 · two date causes</h1>
+        <p class="meta">
+          <span>owner <b>support desk</b></span>
+          <span class="status">known</span>
+          <span>reviewed 2026-10-29</span>
+        </p>
+      </header>
+      <main>
+        <p>
+          Ticket #4471 is not one date bug. Its 412 unique reports split into two causes when
+          grouped by the tenant's date locale, booking form, and intake channel.
+        </p>
+        <h2>The two causes</h2>
+        <h3>Shared parser reads day-first dates as month-first — 379 reports</h3>
+        <p>
+          For these reports, the tenant writes day before month but the shared parser reads
+          month first. The date therefore lands on a different day. These reports span 11
+          tenants and arrived through the app, email, and booking forms.
+        </p>
+        <h3>booking-v3 gives day-first users a month-first hint — 33 reports</h3>
+        <p>
+          These reports came from booking-v3 forms. The form tells people to enter
+          <code>MM/DD/YYYY</code>, while the tenant's locale reads dates day first. The hint
+          and the tenant's date interpretation disagree, so this is a separate cause from the
+          shared parser.
+        </p>
+        <aside class="callout">
+          The intake tag is only a guess, not the cause. Classify by tenant, form, and channel:
+          23 parser reports were tagged hint, and 15 hint reports were tagged parser.
+        </aside>
+        <h2>Reports merged into #4471</h2>
+        <p><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p>
+        <table>
+          <thead>
+            <tr>
+              <th>cause</th>
+              <th>reports</th>
+              <th>tagged as</th>
+              <th>tenants</th>
+              <th>seen</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>parser</code></td>
+              <td>379</td>
+              <td>parser ×356 · hint ×23</td>
+              <td>11</td>
+              <td>2026-04-01 → 2026-10-04</td>
+              <td>#4471</td>
+            </tr>
+            <tr>
+              <td><code>hint</code></td>
+              <td>33</td>
+              <td>parser ×15 · hint ×18</td>
+              <td>3</td>
+              <td>2026-04-17 → 2026-09-22</td>
+              <td>not this ticket — no ticket of its own</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="muted">
+          5 reports read as a one-day move; filed under <code>parser</code> by tenant.
+        </p>
+        <p>
+          The export contains 427 rows but only 412 report IDs; the 15 repeated rows are
+          overlapping export pages, not additional reports. The five desk notes that describe
+          a one-day move all remain in the parser group under the tenant-and-channel rule.
+          They are not a third cause in this export.
+        </p>
+        <p class="stamp">desk ref <b>DR-QX26-BCGY</b></p>
+      </main>
+      <footer>Pages are written by people. Tables and charts are built from data at render time.</footer>
+    </div>
+  </body>
+</html>

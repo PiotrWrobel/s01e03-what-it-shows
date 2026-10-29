@@ -1,0 +1,47 @@
+---
+layout: runbook
+title: '#4471 · two date causes'
+owner: support desk
+status: known
+reviewed: 2026-10-29
+signature: 'Piotr Wróbel'
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+Ticket #4471 is not one date bug. Its 412 unique reports split into two causes when grouped
+by the tenant's date locale, booking form, and intake channel.
+
+## The two causes
+
+### Shared parser reads day-first dates as month-first — 379 reports
+
+For these reports, the tenant writes day before month but the shared parser reads month first.
+The date therefore lands on a different day. These reports span 11 tenants and arrived through
+the app, email, and booking forms.
+
+### booking-v3 gives day-first users a month-first hint — 33 reports
+
+These reports came from booking-v3 forms. The form tells people to enter `MM/DD/YYYY`, while
+the tenant's locale reads dates day first. The hint and the tenant's date interpretation
+disagree, so this is a separate cause from the shared parser.
+
+<Callout>
+The intake tag is only a guess, not the cause. Classify by tenant, form, and channel: 23
+parser reports were tagged hint, and 15 hint reports were tagged parser.
+</Callout>
+
+## Reports merged into #4471
+
+<CauseTable ticket={4471} />
+
+The export contains 427 rows but only 412 report IDs; the 15 repeated rows are overlapping
+export pages, not additional reports. The five desk notes that describe a one-day move all
+remain in the parser group under the tenant-and-channel rule. They are not a third cause in
+this export.
+
+<RenderStamp {signature} />
